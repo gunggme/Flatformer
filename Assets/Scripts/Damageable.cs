@@ -86,7 +86,7 @@ public class Damageable : MonoBehaviour
     }
 
     private float timeSinceHit = 0; 
-    public float invicibilityTimer = 0.25f  ;
+    public float invicibilityTimer = 0.25f;
 
     public bool IsAlive
     {
