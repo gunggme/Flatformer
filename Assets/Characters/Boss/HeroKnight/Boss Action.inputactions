@@ -1,0 +1,46 @@
+{
+    "name": "New Controls",
+    "maps": [
+        {
+            "name": "Block",
+            "id": "88c074c3-4ed6-4191-ab0b-d424022348ec",
+            "actions": [
+                {
+                    "name": "New action",
+                    "type": "Button",
+                    "id": "10a39088-0525-4ba7-bce8-99447f4caf9c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "1de46616-80fb-421c-b0dc-6862ec2b5899",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Boss Control",
+                    "action": "New action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "Boss Control",
+            "bindingGroup": "Boss Control",
+            "devices": [
+                {
+                    "devicePath": "<Mouse>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
+}
