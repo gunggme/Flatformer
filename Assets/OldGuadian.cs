@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class OldGuadian : MonoBehaviour
 {
-     public float walkAcceleration = 2;
+    public float walkAcceleration = 2;
     public float maxSpeed = 3f;
     public float walkStopRate = 0.6f;
     public DetectionZone attackZone;
@@ -72,7 +72,6 @@ public class OldGuadian : MonoBehaviour
     {
         get
         {
-            
             return animator.GetBool(AnimationStrings.canMove);
         }
     }

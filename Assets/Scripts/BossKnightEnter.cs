@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class BossKnightEnter : MonoBehaviour
 {
-    [SerializeField] private BossKnight bossKt;
+    [SerializeField] private BossKnight bossHK;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log("Room Enter!");
-        bossKt.BossSpawn();
+        bossHK.BossSpawn();
         Destroy(gameObject);
     }
 }
