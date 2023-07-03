@@ -29,6 +29,7 @@ public class BossKnight : MonoBehaviour
     private int[] attackAnimation =
         { Animator.StringToHash("Attack1"), Animator.StringToHash("Attack2"), Animator.StringToHash("Attack3") };
 
+    // 보스 스폰은 외부 오브젝트로 구현 부탁.
     public void BossSpawn()
     {
         Debug.Log("BossSpawn");
@@ -102,6 +103,7 @@ public class BossKnight : MonoBehaviour
         }
     }
 
+    
     private bool onBlock = false;
     public void OnBlock()
     {
@@ -111,6 +113,8 @@ public class BossKnight : MonoBehaviour
     private int block = Animator.StringToHash("Block");
     private float blockTime = 0f;
     private float blockCool = 0f;
+    
+    //끝나는 시간 추가 개선
     private void Block()
     {
         if (blockCool > 0f)
@@ -126,7 +130,24 @@ public class BossKnight : MonoBehaviour
     }
 
     private readonly int roll = Animator.StringToHash("Roll");
-    public bool IsRollin { get; set; } = false;
+
+    // get set 수정
+    private bool isRollin = false;
+
+    public bool IsRollin
+    {
+        // get set 이렇게 안쓰면 큰일난다.
+        // get set과 프로퍼티 사용 방법
+        // https://itmining.tistory.com/34
+        get
+        {
+            return isRollin;  
+        }
+        set
+        {
+            isRollin = value;
+        }  
+    } 
 
     private float rollCoolTime = 0f;
 
