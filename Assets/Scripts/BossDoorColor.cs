@@ -5,28 +5,23 @@ using UnityEngine.Tilemaps;
 public class BossDoorColor : MonoBehaviour
 {
     private Tilemap tile;
-    
-    private bool isEntered = false;
 
+    private Animator anim;
+    
+    private float val = 0f;
+    
     private void Awake()
     {
-        tile = GetComponent<Tilemap>();
+        anim = GetComponent<Animator>();
     }
 
-    public void ChangeCol()
+    public void Open()
     {
-        isEntered = true;
+        anim.SetTrigger("Open");
     }
-
-    private void Update()
+    public void Close()
     {
-        if (!isEntered)
-            return;
-        Color col = tile.color;
-        col.a += 0.002f;
-
-        tile.color = col;
-        if (col.a >= 1)
-            isEntered = false;
+        anim.SetTrigger("Close");
     }
+    
 }

@@ -10,7 +10,8 @@ public class BossKnightEnter : MonoBehaviour
         Debug.Log("Room Enter!");
         bossHK.BossSpawn();
         bossDoor.gameObject.SetActive(true);
-        bossDoor.ChangeCol();
+        
+        bossDoor.Close();
         
         Destroy(gameObject);
     }

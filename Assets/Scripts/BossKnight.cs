@@ -13,6 +13,7 @@ public class BossKnight : MonoBehaviour
     public DetectionZone detectZone;
     
     public GameObject player;
+    public BossDoorColor bossDoor;
 
     private bool isSpawn = false;
     private bool isFalled = false;
@@ -192,6 +193,7 @@ public class BossKnight : MonoBehaviour
     public void Death()
     {
         isDead = true;
+        bossDoor.Open();
         StopAllCoroutines();
     }
     
