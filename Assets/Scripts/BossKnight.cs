@@ -11,12 +11,12 @@ public class BossKnight : MonoBehaviour
     private Animator anim;
 
     public DetectionZone detectZone;
-    public Damageable damageable;
     
     public GameObject player;
 
     private bool isSpawn = false;
     private bool isFalled = false;
+    private bool isDead = false;
 
     private readonly int[] attackAnimation =
         { Animator.StringToHash("Attack1"), Animator.StringToHash("Attack2"), Animator.StringToHash("Attack3") };
@@ -40,7 +40,7 @@ public class BossKnight : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!isSpawn)
+        if (!isSpawn || isDead)
             return;
         if (!isFalled)
         {
@@ -168,6 +168,12 @@ public class BossKnight : MonoBehaviour
 
     #region Block
     private bool isBlocking = false;
+
+    public bool IsBlocking
+    {
+        get => isBlocking;
+    }
+    
     private readonly int block = Animator.StringToHash("Block");
     private readonly int onBlocked = Animator.StringToHash("onBlocked");
     private void Block()
@@ -177,14 +183,18 @@ public class BossKnight : MonoBehaviour
     }
     #endregion
 
-
-
     private readonly int hurt = Animator.StringToHash("On3Attack");
     private void KnockBackBoss()
     {
         anim.SetTrigger(hurt);
     }
 
+    public void Death()
+    {
+        isDead = true;
+        StopAllCoroutines();
+    }
+    
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (isSpawn)
@@ -207,7 +217,6 @@ public class BossKnight : MonoBehaviour
         }
 
         
-        damageable.Hit(10, Vector2.zero);
         if (other.name == "SwordAttack3")
         {
             StopCoroutine(Pattern(false));

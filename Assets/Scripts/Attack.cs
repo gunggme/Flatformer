@@ -22,6 +22,9 @@ public class Attack : MonoBehaviour
                 transform.parent.localScale.x > 0 ? knockback : new Vector2(-knockback.x, knockback.y);
             
             // Hit the target
+            if (other.gameObject.transform.name == "HeroKnight" && other.GetComponent<BossKnight>().IsBlocking)
+                return;
+
             isHit = damageable.Hit(attackDamage, deliveredKcockback);
             if (isHit && gameObject.CompareTag("Player"))
             {

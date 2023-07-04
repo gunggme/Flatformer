@@ -42,7 +42,7 @@ public class Damageable : MonoBehaviour
             healthChanged?.Invoke(_health, _maxHealth);
             
             // If heath drops below 0, character is no longer alive
-            if (_health < 0)
+            if (_health <= 0)
             {
                 if (gameObject.CompareTag("Enemy"))
                 {
@@ -107,7 +107,7 @@ public class Damageable : MonoBehaviour
         }
     }
 
-    void Awake()
+    private void Awake()
     {
         animator = GetComponent<Animator>();
     }
@@ -117,7 +117,7 @@ public class Damageable : MonoBehaviour
         Heath = MaxHealth;
     }
 
-    void Update()
+    private void Update()
     {
         if (isInvincible)
         {
