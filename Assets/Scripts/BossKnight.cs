@@ -1,7 +1,8 @@
 using System;
 using System.Collections;
-using Unity.VisualScripting;
+using System.Text;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class BossKnight : MonoBehaviour
 {
@@ -10,14 +11,14 @@ public class BossKnight : MonoBehaviour
     private Animator anim;
 
     public DetectionZone detectZone;
+    public Damageable damageable;
+    
     public GameObject player;
 
-    private bool isSpawn;
-    private bool isTouched;
+    private bool isSpawn = false;
+    private bool isFalled = false;
 
-    public int atkIndex;
-
-    private int[] attackAnimation =
+    private readonly int[] attackAnimation =
         { Animator.StringToHash("Attack1"), Animator.StringToHash("Attack2"), Animator.StringToHash("Attack3") };
 
     // 보스 스폰은 외부 오브젝트로 구현 부탁.
@@ -26,7 +27,6 @@ public class BossKnight : MonoBehaviour
         Debug.Log("BossSpawn");
         transform.position = new Vector2(180, 50);
         gameObject.SetActive(true);
-        // velocity.y != 0 이 되게
         rigid.velocity = Vector2.down;
     }
 
@@ -38,255 +38,187 @@ public class BossKnight : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            Attack(atkIndex);
-        }
-    }
-
     private void FixedUpdate()
     {
-        if (!isTouched || isDead)
-            return;
         if (!isSpawn)
+            return;
+        if (!isFalled)
         {
-            isSpawn = true;
+            isFalled = true;
             anim.SetTrigger("StopFall");
-            // StartCoroutine(Pattern());
+            StartCoroutine(Pattern(true));
             return;
         }
-
-        LookPoint();
+        
+        LookPos();
         Move();
         Roll();
     }
 
-    private void LookPoint()
+    private void LookPos()
     {
-        if (isAttack || isRollin)
+        if (isAttacking || isRolling || isBlocking)
             return;
-        if (transform.position.x - player.transform.position.x >= 0)
-            transform.localScale = new Vector2(-2f, 2f);
-        else
-            transform.localScale = new Vector2(2f, 2f);
+        int xVal = transform.position.x - player.transform.position.x >= 0 ? -2 : 2;
+        transform.localScale =  new Vector2(xVal, 2f);
     }
 
-    private readonly int move = Animator.StringToHash("Move");
-    private bool isMove = false;
+    #region Move
+    private readonly int isRunning = Animator.StringToHash("isRunning");
+    private float noMove = 0f;
+    private bool isMoving = false;
     private void Move()
     {
-        if (detectZone.detectedCollider.Count > 0)
+        if (noMove > 0f)
         {
-            isMove = false;
-            rigid.velocity = Vector2.zero;
+            noMove -= Time.fixedDeltaTime;
+            return;
         }
-        else
-        {
-            isMove = true;
-            rigid.velocity = 3f * transform.localScale.x * Vector2.right;
-        }
-<<<<<<< HEAD
-        // else
-        // {
-        //     isMove = false;
-        //     rigid.velocity = Vector2.zero;
-        // }
-        anim.SetBool(move, isMove);
-    } 
-=======
-    }
 
-    
-    private bool onBlock = false;
-    public void OnBlock()
-    {
-        onBlock = true;
-        blockTime = 3f;
+        float dirX = transform.localScale.x * Time.fixedDeltaTime * 65;
+        if (isAttacking || isRolling || isBlocking || detectZone.detectedCollider.Count > 0)
+            dirX = 0f;
+
+        anim.SetBool(isRunning, dirX != 0f);
+        isMoving = dirX != 0f;
+        rigid.velocity = Vector2.right * dirX;
     }
-    private int block = Animator.StringToHash("Block");
-    private float blockTime = 0f;
-    private float blockCool = 0f;
-    
-    //끝나는 시간 추가 개선
-    private void Block()
-    {
-        if (blockCool > 0f)
-        {
-            blockCool -= Time.fixedDeltaTime;
-            return;
-        }
-        if (!onBlock || blockTime < 0f || detectZone.detectedCollider.Count == 0)
-            return;
-        
-        blockTime -= Time.fixedDeltaTime;
-        anim.SetBool(block, true);
-    }
->>>>>>> 295f9f1df3ec097dec4fc9ee025e90ec364d840a
+    #endregion
 
     #region Roll
-    
     private readonly int roll = Animator.StringToHash("Roll");
-<<<<<<< Updated upstream
-
-    // get set 수정
-    private bool isRollin = false;
-
-    public bool IsRollin
-    {
-        // get set 이렇게 안쓰면 큰일난다.
-        // get set과 프로퍼티 사용 방법
-        // https://itmining.tistory.com/34
-        get
-        {
-            return isRollin;  
-        }
-        set
-        {
-            isRollin = value;
-        }  
-    } 
-=======
-<<<<<<< HEAD
-    private bool isRollin = false;
-=======
->>>>>>> Stashed changes
-
-    // get set 수정
-    private bool isRollin = false;
-
-    public bool IsRollin
-    {
-        // get set 이렇게 안쓰면 큰일난다.
-        // get set과 프로퍼티 사용 방법
-        // https://itmining.tistory.com/34
-        get
-        {
-            return isRollin;  
-        }
-        set
-        {
-            isRollin = value;
-        }  
-    } 
-
->>>>>>> 295f9f1df3ec097dec4fc9ee025e90ec364d840a
+    private bool isRolling = false;
     private float rollCoolTime = 0f;
     private void Roll()
     {
-        if (isRollin)
+        if (isRolling)
             rigid.velocity = transform.localScale.x * Time.fixedDeltaTime * 300f * Vector2.right;
+        
+        if (isAttacking || isBlocking)
+            return;
         if (rollCoolTime > 0f)
         {
             rollCoolTime -= Time.fixedDeltaTime;
             return;
         }
-        
-        if (Vector2.Distance(transform.position, player.transform.position) > 8.5f && !isRollin)
+
+        if (Vector2.Distance(transform.position, player.transform.position) > 8.5f && !isRolling)
         {
+            rollCoolTime = 5f;
             anim.SetTrigger(roll);
-            isRollin = true;
+            isRolling = true;
         }
     }
-    private void RollStop() // 애니메이션에서 호출
+    private void StopRoll()
     {
         rigid.velocity = Vector2.zero;
-        rollCoolTime = 4f;
-        isRollin = false;
-        Attack(0);
-        Attack(1);
-        Attack(2);
+        isRolling = false;
+        
+        Attack(UnityEngine.Random.Range(0, 3));
     }
     #endregion
     
-    private readonly WaitForSeconds wait3 = new(3f);
-    private readonly WaitForSeconds wait2 = new(2f);
-    private readonly WaitForSeconds waitDot1 = new(0.1f);
-
-    private IEnumerator Pattern()
+    private readonly WaitForSeconds[] waitTimes = {new(2f), new(3f), new(4f)};
+    private IEnumerator Pattern(bool firstWait)
     {
-        while (isRollin || detectZone.detectedCollider.Count == 0)
-            yield return null;
-        
-        int nextBehavior = UnityEngine.Random.Range(0, 2);
-
-        switch (nextBehavior)
+        if (firstWait)
+            yield return waitTimes[0];
+        while (isAttacking || isRolling || isBlocking || isMoving)
         {
-            case 0: // Attack
-                int attacks = UnityEngine.Random.Range(1, 4);
-                for (int i = 0; i < attacks; i++)
-                {
-                    Attack(i);
-                }
-                break;
-            
-            case 1: // Block
-                Block();
-                yield return wait3;
-                anim.SetBool(block, false);
-                isBlock = false;
-                break;
+            yield return null;
         }
 
-        yield return wait2;
-        
-        StartCoroutine(Pattern());
-    }
+        if (!isRolling)
+            switch (UnityEngine.Random.Range(0, 3))
+            {
+                case 0:
+                case 1: //Attack
+                    for (int i = 0; i < UnityEngine.Random.Range(0, 3); i++)
+                        Attack(i);
+                    break;
+                
+                case 2: //Block
+                    Block();
+                    yield return waitTimes[UnityEngine.Random.Range(0, 3)];
+                    Block();
+                    
+                    break;
+            }
 
-    #region Attack
+        yield return waitTimes[0];
+        
+        StartCoroutine(Pattern(false));
+    }
     
-    private bool isAttack = false;
+    #region Attack
     private void Attack(int atkIdx)
     {
         anim.SetTrigger(attackAnimation[atkIdx]);
     }
-    private void AttackStart() // 애니메이터에서 호출
+    private bool isAttacking = false;
+    private void AttackTrue()
     {
-        isAttack = true;
+        isAttacking = true;
     }
-    private void AttackStop() // 애니메이터에서 호출
+    private void AttackFalse()
     {
-        isAttack = false;
+        isAttacking = false;
     }
     #endregion
 
     #region Block
-
+    private bool isBlocking = false;
     private readonly int block = Animator.StringToHash("Block");
-    private readonly int isBlocked = Animator.StringToHash("isBlocked");
-    private bool isBlock = false;
+    private readonly int onBlocked = Animator.StringToHash("onBlocked");
     private void Block()
     {
-        isBlock = true;
-        anim.SetBool(block, true);
+        isBlocking = !isBlocking;
+        anim.SetBool(block, isBlocking);
     }
     #endregion
 
-    private bool isDead = false;
-    public void OnDeath()
+
+
+    private readonly int hurt = Animator.StringToHash("On3Attack");
+    private void KnockBackBoss()
     {
-        isDead = true;
-        StopCoroutine(Pattern());
+        anim.SetTrigger(hurt);
     }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (!other.gameObject.CompareTag("Ground"))
+        if (isSpawn)
             return;
-
-        isTouched = true;
+        isSpawn = true;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.CompareTag("Player"))
-            return;
+        Transform trans = transform;
+        Vector2 pos = trans.position;
+        Vector2 scale = trans.localScale;
+        float dirX = player.transform.position.x - pos.x;
 
-        if (isBlock)
+        bool isLooking = (dirX >= 0 && scale.x >= 0) || (dirX < 0 && scale.x < 0);
+        if (isBlocking && isLooking)
         {
-            anim.SetTrigger(isBlocked);
+            anim.SetTrigger(onBlocked);
             return;
+        }
+
+        
+        damageable.Hit(10, Vector2.zero);
+        if (other.name == "SwordAttack3")
+        {
+            StopCoroutine(Pattern(false));
+            StopAllCoroutines();
+            isMoving = false;
+            isRolling = false;
+            isBlocking = false;
+            anim.SetBool(block, false);
+            isAttacking = false;
+            KnockBackBoss();
+            StartCoroutine(Pattern(true));
         }
     }
 }
