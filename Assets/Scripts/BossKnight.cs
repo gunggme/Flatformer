@@ -118,7 +118,7 @@ public class BossKnight : MonoBehaviour
     }
     #endregion
     
-    private readonly WaitForSeconds[] waitTimes = {new(2f), new(3f), new(4f)};
+    private readonly WaitForSeconds[] waitTimes = {new(1f), new(2f), new(3f), new(4f)};
     private IEnumerator Pattern(bool firstWait)
     {
         if (firstWait)
@@ -139,13 +139,13 @@ public class BossKnight : MonoBehaviour
                 
                 case 2: //Block
                     Block();
-                    yield return waitTimes[UnityEngine.Random.Range(0, 3)];
+                    yield return waitTimes[UnityEngine.Random.Range(1, 4)];
                     Block();
                     
                     break;
             }
 
-        yield return waitTimes[0];
+        yield return waitTimes[1];
         
         StartCoroutine(Pattern(false));
     }
