@@ -99,6 +99,8 @@ public class OldGuadian : MonoBehaviour
     
     void Update()
     {
+        if (!animator.GetBool(AnimationStrings.isAlive))
+            return;
         HasTarget = attackZone.detectedCollider.Count > 0;
         if (reverseAttackZone.detectedCollider.Count > 0)
         {
@@ -118,6 +120,8 @@ public class OldGuadian : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!animator.GetBool(AnimationStrings.isAlive))
+            return;
         if (touchingDirection.IsOnWall) 
         {
             FlipDirection();
@@ -170,8 +174,16 @@ public class OldGuadian : MonoBehaviour
         portal.gameObject.SetActive(true);
     }
 
-    public void OnHit(int damage, Vector2 knockback) 
+    public void OnDeath() 
     {
+        Invoke(nameof(ActiveFalse), 3f);
+    }
+
+    private void ActiveFalse()
+    {
+        gameObject.SetActive(false);
+        portal.transform.position = transform.position;
+        portal.SetActive(true);
     }
 
     public void OnCiffDetected()
