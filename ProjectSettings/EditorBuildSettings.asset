@@ -18,6 +18,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Stage3.unity
     guid: 1163817bf901b444fbed49c83133859a
   - enabled: 1
+    path: Assets/Scenes/GameOver.unity
+    guid: 791c2fddac498a94194d9e0e3e600813
+  - enabled: 1
     path: Assets/Scenes/GameClear.unity
     guid: 597b868b66a6bb74b90dffb95c12ae25
   m_configObjects: {}
