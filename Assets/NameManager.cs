@@ -71,7 +71,7 @@ public class NameManager : MonoBehaviour
 
         string rawData = request.error == null ? request.downloadHandler.text : "error";
 
-        List<RankSet> rankdatas = new();
+        List<RankSet> rankDatas = new();
         string slicedData = "";
         // 쓸데없는 정보들 다 버리고 content 안에 있는 내용만 추출
         for (int i = 12; rawData[i-1] != ']'; i++) // 마지막 요소이면 break
@@ -79,7 +79,7 @@ public class NameManager : MonoBehaviour
             slicedData += rawData[i];
             if (rawData[i] == '}') // '}'이 나왔다는 것은 데이터가 끝났다는 뜻
             {
-                rankdatas.Add(JsonUtility.FromJson<RankSet>(slicedData));
+                rankDatas.Add(JsonUtility.FromJson<RankSet>(slicedData));
                 slicedData = "";
                 i++; // '}'뒤에는 ','가 있으니 1을 더해준다
                 
@@ -92,8 +92,8 @@ public class NameManager : MonoBehaviour
 
         for (int i = 0; i < 4; i++)
         {
-            TimeSpan t = TimeSpan.FromSeconds(rankdatas[i].time);
-            ranksTexts[i].text = $"Rank {i+1}. {rankdatas[i].playerName}\ntime : {t.Hours:D2}:{t.Minutes:D2}:{t.Seconds:D2}";
+            TimeSpan t = TimeSpan.FromSeconds(rankDatas[i].time);
+            ranksTexts[i].text = $"Rank {i+1}. {rankDatas[i].playerName}\ntime : {t.Hours:D2}:{t.Minutes:D2}:{t.Seconds:D2}";
         }
     }
 }
