@@ -15,8 +15,6 @@ public class Portal : Interactable
 
     public void ChangeScene()
     {
-        if (sceneName == "GameOver")
-            GameManager.instance.SaveDataToJson();
         SceneManager.LoadScene(sceneName);
     }
 }

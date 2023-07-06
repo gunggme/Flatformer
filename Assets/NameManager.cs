@@ -1,6 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -14,6 +18,8 @@ public class NameManager : MonoBehaviour
     [SerializeField] private GameObject main2Image;
     [SerializeField] private GameObject rankImage;
 
+    [SerializeField] private TMP_Text[] ranksTexts;
+
     private bool isClick = false;
     
     private void Awake()
@@ -21,6 +27,7 @@ public class NameManager : MonoBehaviour
         saveManager = FindObjectOfType<SaveManager>();
     }
 
+    
     private void Update()
     {
         if (Input.anyKey && !isClick)
@@ -47,11 +54,46 @@ public class NameManager : MonoBehaviour
     {
         main2Image.SetActive(false);
         rankImage.SetActive(true);
+        StartCoroutine(SetRank());
     }
 
     public void MoveMain()
     {
         rankImage.SetActive(false);
         main2Image.SetActive(true);
+    }
+
+
+    private IEnumerator SetRank()
+    {
+        UnityWebRequest request = UnityWebRequest.Get("pcs.pah.kr:1005/api/ranking");
+        yield return request.SendWebRequest();
+
+        string rawData = request.error == null ? request.downloadHandler.text : "error";
+
+        List<RankSet> rankdatas = new();
+        string slicedData = "";
+        // 쓸데없는 정보들 다 버리고 content 안에 있는 내용만 추출
+        for (int i = 12; rawData[i-1] != ']'; i++) // 마지막 요소이면 break
+        {
+            slicedData += rawData[i];
+            if (rawData[i] == '}') // '}'이 나왔다는 것은 데이터가 끝났다는 뜻
+            {
+                rankdatas.Add(JsonUtility.FromJson<RankSet>(slicedData));
+                slicedData = "";
+                i++; // '}'뒤에는 ','가 있으니 1을 더해준다
+                
+                /*
+                 for문 조건식 i-1한 이유
+                 마지막에 i++이 실행되면 ']'을 건너뛰기 때문에
+                */
+            }
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            TimeSpan t = TimeSpan.FromSeconds(rankdatas[i].time);
+            ranksTexts[i].text = $"Rank {i+1}. {rankdatas[i].playerName}\ntime : {t.Hours:D2}:{t.Minutes:D2}:{t.Seconds:D2}";
+        }
     }
 }

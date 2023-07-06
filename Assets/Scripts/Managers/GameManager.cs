@@ -65,10 +65,6 @@ public class GameManager : MonoBehaviour
         {
             Timer = 0;
         }
-
-        // Test
-        if (Input.GetKeyDown(KeyCode.K))
-            SaveDataToJson();
         
         if (curScene.name is "Main")
         {
@@ -76,24 +72,15 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        if (curScene.name == "GameOver")
+        if (curScene.name != "GameOver" && curScene.name != "Main")
         {
-            SaveDataToJson();
+            Timer += Time.deltaTime;
         }
 
-        if (curScene.name != "GameOver" && curScene.name != "Main") // name != "GO" || name != "main"
-        {
-            Timer += Time.fixedDeltaTime;
-        }
-
+        // Test
         if (Input.GetKeyDown(KeyCode.F8))
         {
-            SceneManager.LoadScene("GameOver");
+            SceneManager.LoadScene("GameClear");
         }
-    }
-    
-    public void SaveDataToJson()
-    {
-        
     }
 }

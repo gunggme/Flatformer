@@ -352,6 +352,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57aa47f3cb5386942a3c499143af2088, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rank:
+    playerName: 
+    time: 0
 --- !u!4 &397214696
 Transform:
   m_ObjectHideFlags: 0
@@ -947,7 +950,7 @@ GameObject:
   - component: {fileID: 818118368}
   - component: {fileID: 818118367}
   m_Layer: 5
-  m_Name: Title_3
+  m_Name: Rank_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1164,7 +1167,7 @@ GameObject:
   - component: {fileID: 964947892}
   - component: {fileID: 964947891}
   m_Layer: 5
-  m_Name: Main_1
+  m_Name: Main_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1266,6 +1269,11 @@ MonoBehaviour:
   main1Image: {fileID: 1563210886}
   main2Image: {fileID: 964947889}
   rankImage: {fileID: 2087992079}
+  ranksTexts:
+  - {fileID: 1330146278}
+  - {fileID: 1650403067}
+  - {fileID: 1432988272}
+  - {fileID: 818118367}
 --- !u!4 &1005958682
 Transform:
   m_ObjectHideFlags: 0
@@ -1734,7 +1742,7 @@ GameObject:
   - component: {fileID: 1330146279}
   - component: {fileID: 1330146278}
   m_Layer: 5
-  m_Name: Title_1
+  m_Name: Rank_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2063,7 +2071,7 @@ GameObject:
   - component: {fileID: 1432988273}
   - component: {fileID: 1432988272}
   m_Layer: 5
-  m_Name: Title_4
+  m_Name: Rank_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2335,12 +2343,12 @@ GameObject:
   - component: {fileID: 1563210889}
   - component: {fileID: 1563210888}
   m_Layer: 5
-  m_Name: Main
+  m_Name: Main_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1563210887
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2548,7 +2556,7 @@ GameObject:
   - component: {fileID: 1650403068}
   - component: {fileID: 1650403067}
   m_Layer: 5
-  m_Name: Title_2
+  m_Name: Rank_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3106,7 +3114,7 @@ GameObject:
   - component: {fileID: 2070342868}
   - component: {fileID: 2070342867}
   m_Layer: 5
-  m_Name: Title_5
+  m_Name: Back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3302,7 +3310,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2087992080
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3318,8 +3326,8 @@ RectTransform:
   - {fileID: 1474990778}
   - {fileID: 1330146277}
   - {fileID: 1650403066}
-  - {fileID: 818118366}
   - {fileID: 1432988271}
+  - {fileID: 818118366}
   - {fileID: 2070342866}
   m_Father: {fileID: 1913638653}
   m_RootOrder: 2
