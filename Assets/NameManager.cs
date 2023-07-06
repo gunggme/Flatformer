@@ -13,6 +13,8 @@ public class NameManager : MonoBehaviour
     [SerializeField] private GameObject main1Image;
     [SerializeField] private GameObject main2Image;
     [SerializeField] private GameObject rankImage;
+
+    private bool isClick = false;
     
     private void Awake()
     {
@@ -21,16 +23,16 @@ public class NameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.anyKey)
+        if (Input.anyKey && !isClick)
         {
             main1Image.SetActive(false);
             main2Image.SetActive(true);
-            
+            isClick = true;
         }
         
         if (nameInput.text.Length > 1)
         {
-            saveManager.playerName = nameInput.text;
+            saveManager.rank.playerName = nameInput.text;
         }
     }
     

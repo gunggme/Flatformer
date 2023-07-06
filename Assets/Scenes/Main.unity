@@ -1262,7 +1262,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nameInput: {fileID: 791472214}
-  saveManager: {fileID: 0}
+  saveManager: {fileID: 397214695}
   main1Image: {fileID: 1563210886}
   main2Image: {fileID: 964947889}
   rankImage: {fileID: 2087992079}

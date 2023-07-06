@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     public PoolManager poolManager;
     public SaveManager saveManager;
 
-    private float _timer;
+    [SerializeField] private float _timer;
     public float Timer
     {
         get
@@ -47,6 +47,8 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        saveManager = FindObjectOfType<SaveManager>();
     }
 
     private void Update()
@@ -68,17 +70,30 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.K))
             SaveDataToJson();
         
-        if (curScene.name is "main" or "GameOver")
+        if (curScene.name is "Main")
         {
             Timer = 0;
             return;
         }
-        
-        Timer += Time.fixedDeltaTime;
-    }
 
+        if (curScene.name == "GameOver")
+        {
+            SaveDataToJson();
+        }
+
+        if (curScene.name != "GameOver" && curScene.name != "Main") // name != "GO" || name != "main"
+        {
+            Timer += Time.fixedDeltaTime;
+        }
+
+        if (Input.GetKeyDown(KeyCode.F8))
+        {
+            SceneManager.LoadScene("GameOver");
+        }
+    }
+    
     public void SaveDataToJson()
     {
-        saveManager.CallRankStructSave();
+        
     }
 }

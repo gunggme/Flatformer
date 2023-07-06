@@ -1,11 +1,17 @@
-using System.IO;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 public class SaveManager : MonoBehaviour
 {
-    public RankSet rank = new();
+    [SerializeField] public RankSet rank = new RankSet();
 
     private string _playerName;
+
+    private bool isPost = false;
 
     public string playerName
     {
@@ -18,22 +24,47 @@ public class SaveManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    private void Update()
+    {
+        
+    }
+
     public void CallRankStructSave() => RankStructSave();
 
     private void RankStructSave()
     {
-        rank.userName = playerName;
         rank.time = GameManager.instance.Timer;
+    }
 
-        string jsonData = JsonUtility.ToJson(rank);
-        string path = Path.Combine(Application.dataPath, "rankData.json");
+    public IEnumerator UnityWebRequestPOSTTEST(string url)
+    {
+        string json = JsonUtility.ToJson(rank);
+        Debug.Log(json);
 
-        File.WriteAllText(path, jsonData);
+        var req = new UnityWebRequest(url, "POST");
+        byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
+        req.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
+        req.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        req.SetRequestHeader("Content-Type", "application/json");
+
+        //Send the request then wait here until it returns
+        yield return req.SendWebRequest();
+        if (req.isNetworkError)
+        {
+            Debug.Log("Error While Sending: " + req.error);
+            yield break;
+        }
+        else
+        {
+            Debug.Log("Received: " + req.downloadHandler.text);
+            yield break;
+        }
     }
 }
 
+[System.Serializable]
 public class RankSet
 {
-    public string userName;
+    public string playerName;
     public float time;
 }
