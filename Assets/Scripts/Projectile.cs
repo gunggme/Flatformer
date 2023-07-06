@@ -18,24 +18,10 @@ public class Projectile : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
     }
 
-    private void OnEnable()
+    public void Fire()
     {
         Invoke(nameof(ActiveFalse), 3);
-        StartCoroutine(Wait1Frame());
-    }
-
-    private IEnumerator Wait1Frame()
-    {
-        yield return null;
-        if (pro)
-        {
-            rigid.velocity = new Vector2(moveSpeed.x * pro.transform.localScale.x, moveSpeed.y);
-        }
-        else
-        {
-            rigid.velocity = new Vector2(moveSpeed.x * transform.localScale.x, moveSpeed.y);
-        }
-        
+        rigid.velocity = new Vector2(moveSpeed.x * transform.localScale.x, moveSpeed.y);
     }
 
     private void OnDisable()
@@ -67,6 +53,7 @@ public class Projectile : MonoBehaviour
     private void ActiveFalse()
     {
         gameObject.SetActive(false);
+        transform.localScale = new Vector3(1, 1, 1);
     }
     
     

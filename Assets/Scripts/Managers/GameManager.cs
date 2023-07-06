@@ -1,11 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using LitJson;
-using UnityEditor;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,7 +8,7 @@ public class GameManager : MonoBehaviour
     {
         get
         {
-            if (_instance == null)
+            if (!_instance)
             {
                 return null;
             }
@@ -27,8 +21,7 @@ public class GameManager : MonoBehaviour
     }
     
     public PoolManager poolManager;
-
-    public RankData rankData;
+    public SaveManager saveManager;
 
     private float _timer;
     public float Timer
@@ -58,7 +51,9 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (SceneManager.GetActiveScene().buildIndex == 0)
+        Scene curScene = SceneManager.GetActiveScene();
+        
+        if (curScene.buildIndex is 0)
         {
             Destroy(poolManager.gameObject);
             Destroy(gameObject);
@@ -69,28 +64,21 @@ public class GameManager : MonoBehaviour
             Timer = 0;
         }
 
-        if (SceneManager.GetActiveScene().buildIndex != 4)
-        {
-            Timer += Time.fixedDeltaTime;
-        }
-        
         // Test
         if (Input.GetKeyDown(KeyCode.K))
             SaveDataToJson();
-    }
-
-    private void SaveDataToJson()
-    {
-        string jsonData = JsonUtility.ToJson(rankData);
-        string path = Path.Combine(Application.dataPath, "rankData.json");
         
-        File.WriteAllText(path, jsonData);
+        if (curScene.name is "main" or "GameOver")
+        {
+            Timer = 0;
+            return;
+        }
+        
+        Timer += Time.fixedDeltaTime;
     }
-}
 
-[Serializable]
-public class RankData
-{
-    public string userName;
-    public float time;
+    public void SaveDataToJson()
+    {
+        saveManager.CallRankStructSave();
+    }
 }

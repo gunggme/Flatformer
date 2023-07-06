@@ -12,15 +12,17 @@ public class ProjectileLauncher : MonoBehaviour
     
     public void FireProjectile()
     {
-        GameObject projectile = GameManager.instance.poolManager.Get(projectileIdxNum).gameObject;
+        GameObject projectile = GameManager.instance.poolManager.Get(projectileIdxNum);
         Projectile projecLogic = projectile.GetComponent<Projectile>();
         projecLogic.pro = this.gameObject;
         projectile.transform.position = launchPoint.transform.position;
         Vector3 origScale = projectile.transform.localScale;
         projectile.transform.localScale = new Vector3(
-            origScale.x * transform.localScale.x > 0 ? 1 : -1,
+            Mathf.Abs(origScale.x) * transform.localScale.x > 0 ? 1 : -1,
             origScale.y,
             origScale.z
         );
+        projecLogic.Fire();
+        
     }
 }
