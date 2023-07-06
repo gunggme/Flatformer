@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -72,17 +71,15 @@ public class NameManager : MonoBehaviour
         string rawData = request.error == null ? request.downloadHandler.text : "error";
 
         List<RankSet> rankDatas = new();
-        int cnt = 0;
         string slicedData = "";
         // 쓸데없는 정보들 다 버리고 content 안에 있는 내용만 추출
-        for (int i = 12; rawData[i-1] != ']' && cnt < 4; i++) // 마지막 요소이거나, 상위 4명을 다 뽑았을 때 break
+        for (int i = 12; rawData[i-1] != ']' && rankDatas.Count < 4; i++) // 마지막 요소이거나, 상위 4명을 다 뽑았을 때 break
         {
             slicedData += rawData[i];
             if (rawData[i] == '}') // '}'이 나왔다는 것은 데이터가 끝났다는 뜻
             {
                 rankDatas.Add(JsonUtility.FromJson<RankSet>(slicedData));
                 slicedData = "";
-                cnt++;
                 i++; // '}'뒤에는 ','가 있으니 1을 더해준다
                 
                 /*
