@@ -36,10 +36,6 @@ public class SaveManager : MonoBehaviour
         string json = JsonUtility.ToJson(rank);
         Debug.Log(json);
 
-
-        RankSet rankSet = JsonUtility.FromJson<RankSet>(json.ToString());
-        Debug.Log($"{rankSet.playerName} {rankSet.time}");
-
         var req = new UnityWebRequest(url, "POST");
         byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
         req.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);

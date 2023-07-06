@@ -72,15 +72,17 @@ public class NameManager : MonoBehaviour
         string rawData = request.error == null ? request.downloadHandler.text : "error";
 
         List<RankSet> rankDatas = new();
+        int cnt = 0;
         string slicedData = "";
         // 쓸데없는 정보들 다 버리고 content 안에 있는 내용만 추출
-        for (int i = 12; rawData[i-1] != ']'; i++) // 마지막 요소이면 break
+        for (int i = 12; rawData[i-1] != ']' && cnt < 4; i++) // 마지막 요소이거나, 상위 4명을 다 뽑았을 때 break
         {
             slicedData += rawData[i];
             if (rawData[i] == '}') // '}'이 나왔다는 것은 데이터가 끝났다는 뜻
             {
                 rankDatas.Add(JsonUtility.FromJson<RankSet>(slicedData));
                 slicedData = "";
+                cnt++;
                 i++; // '}'뒤에는 ','가 있으니 1을 더해준다
                 
                 /*
@@ -90,7 +92,7 @@ public class NameManager : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++) // 상위 4위까지
         {
             TimeSpan t = TimeSpan.FromSeconds(rankDatas[i].time);
             ranksTexts[i].text = $"Rank {i+1}. {rankDatas[i].playerName}\ntime : {t.Hours:D2}:{t.Minutes:D2}:{t.Seconds:D2}";
