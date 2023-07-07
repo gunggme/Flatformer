@@ -1,0 +1,20 @@
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://pcs.pah.kr:1006/flatformerranked?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: {username}
+    password: {password}
+  jpa:
+    database: mysql
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+logging.level:
+  org.hibernate.sql: debug
+server:
+  port: 8081
