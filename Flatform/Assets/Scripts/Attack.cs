@@ -28,7 +28,7 @@ public class Attack : MonoBehaviour
             isHit = damageable.Hit(attackDamage, deliveredKcockback);
             if (isHit && gameObject.CompareTag("Player"))
             {
-                this.GetComponentInParent<Damageable>().Heal(10);
+                this.GetComponentInParent<Damageable>().Heal(3);
             }
         }
     }

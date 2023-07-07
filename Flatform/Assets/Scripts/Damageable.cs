@@ -46,7 +46,7 @@ public class Damageable : MonoBehaviour
             {
                 if (gameObject.CompareTag("Enemy"))
                 {
-                    GameManager.instance.Timer -= 10;
+                    GameManager.instance.Timer -= 8;
                 }
                 IsAlive = false;
             }
