@@ -83,4 +83,9 @@ public class GameManager : MonoBehaviour
             SceneManager.LoadScene("GameClear");
         }
     }
+
+    public void ResetTime()
+    {
+        Timer = 0;
+    }
 }

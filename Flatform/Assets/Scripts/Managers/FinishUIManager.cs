@@ -19,4 +19,10 @@ public class FinishUIManager : MonoBehaviour
     {
         SceneManager.LoadScene("Main");
     }
+
+    public void GotoRestart()
+    {
+        GameManager.instance.ResetTime();
+        SceneManager.LoadScene("Stage1");
+    }
 }
