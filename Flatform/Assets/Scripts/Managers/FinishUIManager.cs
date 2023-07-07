@@ -7,7 +7,7 @@ public class FinishUIManager : MonoBehaviour
 {
     [SerializeField] private TMP_Text time;
 
-    private void Awake()
+    private void Start()
     {
         if (GameManager.instance is null)
             return;

@@ -21,7 +21,7 @@ public class Parallax : MonoBehaviour
 
         Vector2 dir = targetPos - beforePos;
 
-        transform.position = new Vector2(dir.x / 2, dir.y / 1.5f) + (Vector2.up * 7);
+        transform.position = dir/2f + (Vector2.up * 7);
         
         beforePos = transform.position;
     }
