@@ -2,7 +2,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://pcs.pah.kr:1006/flatformerranked?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://{host}:{port}/flatformerranked?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: {username}
     password: {password}
   jpa:
