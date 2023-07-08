@@ -306,11 +306,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38d72a853eb6f934e8ff1c8597a77f3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boolName: canMove
+  boolName: lockVelocity
   updateOnState: 0
   updateOnStateMachine: 1
-  valueOnEnter: 0
-  valueOnExit: 1
+  valueOnEnter: 1
+  valueOnExit: 0
 --- !u!114 &-7411748831554732636
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -442,9 +442,6 @@ AnimatorStateMachine:
   - {fileID: 660987778209092305}
   m_EntryTransitions: []
   m_StateMachineTransitions:
-  - first: {fileID: -3853709467459631358}
-    second:
-    - {fileID: 386635653573131054}
   - first: {fileID: -1836437988169754312}
     second:
     - {fileID: 7254108640411727529}
@@ -456,6 +453,9 @@ AnimatorStateMachine:
     second:
     - {fileID: 5748639405539818324}
     - {fileID: -1078877826137943580}
+  - first: {fileID: -3853709467459631358}
+    second:
+    - {fileID: 386635653573131054}
   - first: {fileID: 6304602889646491026}
     second:
     - {fileID: -860283852058029994}
@@ -628,6 +628,7 @@ AnimatorStateMachine:
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours:
   - {fileID: -7427370131633048530}
+  - {fileID: 3227744945468938952}
   m_AnyStatePosition: {x: 50, y: 20, z: 0}
   m_EntryPosition: {x: 50, y: 120, z: 0}
   m_ExitPosition: {x: 800, y: 120, z: 0}
@@ -1562,6 +1563,23 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!114 &3227744945468938952
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38d72a853eb6f934e8ff1c8597a77f3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boolName: canMove
+  updateOnState: 0
+  updateOnStateMachine: 1
+  valueOnEnter: 0
+  valueOnExit: 1
 --- !u!1102 &3336398523231209841
 AnimatorState:
   serializedVersion: 6

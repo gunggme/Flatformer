@@ -12,11 +12,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpImpulse = 10 ;
     [SerializeField] private bool isDash;
     [SerializeField] private float dashPower;
-    private WaitForSeconds waitDash = new(1);
+    [SerializeField] private float attackDashPower;
+    [SerializeField] private bool isAttacking;
     private Vector2 moveInput;
     private TouchingDirection touchingDirection;
     private Damageable damageable;
     [SerializeField] private float dashTime = 3f;
+    [SerializeField] private float attackDashTime = 3f;
 
     public bool IsDash
     {
@@ -162,7 +164,7 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         Debug.Log($"{CurrentMoveSpeed}, {moveInput.x}"); // 대쉬 후에는 0, 1 || 0, -1 이 출력됨
-        if (!damageable.LockVelocity && !IsDash)
+        if (!damageable.LockVelocity && !IsDash && !isAttacking)
         {
             rigid.velocity = new Vector2(moveInput.x * CurrentMoveSpeed, rigid.velocity.y);
         }
@@ -228,6 +230,7 @@ public class PlayerController : MonoBehaviour
         if (context.started && !IsDash)
         {
             animator.SetTrigger(AnimationStrings.attackTrigger);
+            StartCoroutine("AttackDash");
         }
     }
 
@@ -243,7 +246,7 @@ public class PlayerController : MonoBehaviour
     {
         if (context.started)
         {
-            if(!isDash && touchingDirection.IsGrounded && IsRunning)
+            if(!isDash && touchingDirection.IsGrounded && IsRunning && !isAttacking && moveInput.x > 0)
                 StartCoroutine(DashCou());
         }
     }
@@ -252,12 +255,24 @@ public class PlayerController : MonoBehaviour
     IEnumerator DashCou()
     {
         IsDash = true;
-        rigid.velocity = new Vector2(dashPower * transform.localScale.x, rigid.velocity.y);
+        rigid.velocity = new Vector2(moveInput.x * dashPower, rigid.velocity.y);
         
         yield return new WaitForSeconds(dashTime);
         
         IsDash = false;
 
+    }
+
+    IEnumerator AttackDash()
+    {
+        if (touchingDirection.IsGrounded)
+        {
+            isAttacking = true;
+            rigid.velocity = new Vector2(attackDashPower * moveInput.x, rigid.velocity.y);
+            yield return new WaitForSeconds(attackDashTime);
+
+            isAttacking = false;
+        }
     }
 
     

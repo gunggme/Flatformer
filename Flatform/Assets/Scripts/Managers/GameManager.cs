@@ -78,10 +78,10 @@ public class GameManager : MonoBehaviour
         }
 
         // Test
-        /*if (Input.GetKeyDown(KeyCode.F8))
+        if (Input.GetKeyDown(KeyCode.F8))
         {
             SceneManager.LoadScene("GameClear");
-        }*/
+        }
     }
 
     public void ResetTime()

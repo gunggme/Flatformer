@@ -41,6 +41,10 @@ public class NameManager : MonoBehaviour
         {
             saveManager.rank.playerName = nameInput.text;
         }
+        else
+        {
+            saveManager.rank.playerName = "Anonymous" + UnityEngine.Random.Range(100, 99999);
+        }
     }
     
     
