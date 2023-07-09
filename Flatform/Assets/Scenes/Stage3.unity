@@ -15008,7 +15008,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detectZone: {fileID: 882256733}
-  player: {fileID: 0}
+  player: {fileID: 1270622001}
   bossDoor: {fileID: 1063011747}
 --- !u!1 &1086764188
 GameObject:
@@ -15726,6 +15726,11 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 26.948608, y: 11.497171}
   m_EdgeRadius: 0
+--- !u!1 &1270622001 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 733050548680309929, guid: 0d946a3c022ef5c44a52974814e36e8e, type: 3}
+  m_PrefabInstance: {fileID: 132834136}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1280515920
 GameObject:
   m_ObjectHideFlags: 0
