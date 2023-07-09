@@ -19,6 +19,8 @@ public class OldGuadian : MonoBehaviour
     private Damageable damageable;
 
     public Transform[] summonPoint;
+
+    public GameObject bossUI;
     
     public enum WalkableDirection { Right, Left }
     
@@ -107,8 +109,9 @@ public class OldGuadian : MonoBehaviour
             FlipDirection();
         }
 
-        if (reverseAttackZone.detectedCollider.Count > 0 || attackZone.detectedCollider.Count > 0)
+        if ((reverseAttackZone.detectedCollider.Count > 0 || attackZone.detectedCollider.Count > 0) && animator.GetBool("isWait"))
         {
+            bossUI.gameObject.SetActive(true);
             animator.SetBool("isWait", false);
         }
 

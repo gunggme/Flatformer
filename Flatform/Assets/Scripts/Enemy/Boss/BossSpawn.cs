@@ -8,6 +8,8 @@ public class BossSpawn : MonoBehaviour
     public List<Collider2D> detectedCollider = new List<Collider2D>();
     private Collider2D col;
 
+    public GameObject bossHealth;
+
     private void Awake()
     {
         col = GetComponent<Collider2D>();
@@ -18,6 +20,7 @@ public class BossSpawn : MonoBehaviour
         detectedCollider.Add(other);
         if (detectedCollider.Count > 0)
         {
+            bossHealth.gameObject.SetActive(true);
             bossObj.gameObject.SetActive(true);
         }
     }

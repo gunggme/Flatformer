@@ -148,5 +148,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73d5a6eafc02e6b46bd4ed8bb50d49f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: {x: 0, y: 75, z: 0}
+  moveSpeed: {x: 0, y: 30, z: 0}
   timeToFade: 1
