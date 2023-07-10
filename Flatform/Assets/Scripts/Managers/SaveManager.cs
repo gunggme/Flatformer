@@ -10,7 +10,7 @@ public class SaveManager : MonoBehaviour
 
     private string _playerName;
 
-    private bool isPost = false;
+    private bool _isPost = false;
 
     public string playerName
     {
@@ -30,7 +30,8 @@ public class SaveManager : MonoBehaviour
         rank.time = GameManager.instance.Timer;
     }
 
-    public IEnumerator UnityWebRequestPOSTTEST(string url)
+    [Obsolete("Obsolete")]
+    public IEnumerator UnityWebRequestPosttest(string url)
     {
         string json = JsonUtility.ToJson(rank);
         Debug.Log(json);

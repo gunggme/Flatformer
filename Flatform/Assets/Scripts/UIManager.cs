@@ -48,21 +48,4 @@ public class UIManager : MonoBehaviour
         TMP_Text tmpText = Instantiate(healthTextPrefab, spawnPosition, Quaternion.identity, gameCanvas.transform).GetComponent<TMP_Text>();
         tmpText.text = healthRestored.ToString();
     }
-
-    public void OnExit(InputAction.CallbackContext context)
-    {
-        if (context.started)
-        {
-            #if (UNITY_EDITOR || DEVELOPMENT_BUILD)
-            
-            #endif
-            #if (UNITY_STANDALONE)
-            UnityEditor.EditorApplication.isPlaying = false;
-            #elif (UNITY_STANDALONE)
-            Application.Quit();
-            #elif (UNITY_WEBGL)
-            SceneManager.LoadScene("QuitScene");
-            #endif
-        }
-    }
 }

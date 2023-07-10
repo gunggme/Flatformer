@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
     private Damageable damageable;
     [SerializeField] private float dashTime = 3f;
     [SerializeField] private float attackDashTime = 3f;
+    [SerializeField] private float curDashCool;
+    [SerializeField] private float maxDashCool;
 
     public bool IsDash
     {
@@ -159,6 +161,11 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         IsMoving = animator.GetBool(AnimationStrings.isMoving);
+
+        if (curDashCool > 0)
+        {
+            curDashCool -= Time.deltaTime;
+        }
     }
 
     private void FixedUpdate()
@@ -246,8 +253,11 @@ public class PlayerController : MonoBehaviour
     {
         if (context.started)
         {
-            if(!isDash && touchingDirection.IsGrounded && IsRunning && !isAttacking && moveInput.x > 0)
+            if (!isDash && touchingDirection.IsGrounded && IsRunning && !isAttacking && moveInput.x != 0 && curDashCool <= 0)
+            {
                 StartCoroutine(DashCou());
+                curDashCool = maxDashCool;
+            }
         }
     }
     

@@ -76,6 +76,11 @@ public class NameManager : MonoBehaviour
         StartCoroutine(SetRanks());
     }
 
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
+
     private IEnumerator SetRanks()
     {
         UnityWebRequest request = UnityWebRequest.Get("pcs.pah.kr:1005/api/ranking");

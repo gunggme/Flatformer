@@ -149,6 +149,8 @@ MonoBehaviour:
   isAttacking: 0
   dashTime: 0.2
   attackDashTime: 0.1
+  curDashCool: 0
+  maxDashCool: 3
   _isMoving: 0
   _isRunning: 0
   _isFacingRight: 1
