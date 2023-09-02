@@ -22,7 +22,6 @@ public class BossKnight : MonoBehaviour
     private readonly int[] attackAnimation =
         { Animator.StringToHash("Attack1"), Animator.StringToHash("Attack2"), Animator.StringToHash("Attack3") };
 
-    // 보스 스폰은 외부 오브젝트로 구현 부탁.
     public void BossSpawn()
     {
         Debug.Log("BossSpawn");
@@ -58,7 +57,7 @@ public class BossKnight : MonoBehaviour
 
     private void LookPos()
     {
-        if (isAttacking || isRolling || isBlocking)
+        if (isAttacking || isRolling || IsBlocking)
             return;
         int xVal = transform.position.x - player.transform.position.x >= 0 ? -2 : 2;
         transform.localScale =  new Vector2(xVal, 2f);
@@ -77,7 +76,7 @@ public class BossKnight : MonoBehaviour
         }
 
         float dirX = transform.localScale.x * Time.fixedDeltaTime * 65;
-        if (isAttacking || isRolling || isBlocking || detectZone.detectedCollider.Count > 0)
+        if (isAttacking || isRolling || IsBlocking || detectZone.detectedCollider.Count > 0)
             dirX = 0f;
 
         anim.SetBool(isRunning, dirX != 0f);
@@ -95,7 +94,7 @@ public class BossKnight : MonoBehaviour
         if (isRolling)
             rigid.velocity = transform.localScale.x * Time.fixedDeltaTime * 300f * Vector2.right;
         
-        if (isAttacking || isBlocking)
+        if (isAttacking || IsBlocking)
             return;
         if (rollCoolTime > 0f)
         {
@@ -124,7 +123,7 @@ public class BossKnight : MonoBehaviour
     {
         if (firstWait)
             yield return waitTimes[0];
-        while (isAttacking || isRolling || isBlocking || isMoving)
+        while (isAttacking || isRolling || IsBlocking || isMoving)
         {
             yield return null;
         }
@@ -168,19 +167,29 @@ public class BossKnight : MonoBehaviour
     #endregion
 
     #region Block
-    private bool isBlocking = false;
 
-    public bool IsBlocking
+    public bool IsBlocking { get; private set; } = false;
+
+    public bool CantHit
     {
-        get => isBlocking;
+        get
+        {
+            Transform trans = transform;
+            Vector2 pos = trans.position;
+            Vector2 scale = trans.localScale;
+            float dirX = player.transform.position.x - pos.x;
+
+            bool isLooking = (dirX >= 0 && scale.x >= 0) || (dirX < 0 && scale.x < 0);
+            return IsBlocking && isLooking;
+        }
     }
-    
+
     private readonly int block = Animator.StringToHash("Block");
     private readonly int onBlocked = Animator.StringToHash("onBlocked");
     private void Block()
     {
-        isBlocking = !isBlocking;
-        anim.SetBool(block, isBlocking);
+        IsBlocking = !IsBlocking;
+        anim.SetBool(block, IsBlocking);
     }
     #endregion
 
@@ -206,13 +215,7 @@ public class BossKnight : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Transform trans = transform;
-        Vector2 pos = trans.position;
-        Vector2 scale = trans.localScale;
-        float dirX = player.transform.position.x - pos.x;
-
-        bool isLooking = (dirX >= 0 && scale.x >= 0) || (dirX < 0 && scale.x < 0);
-        if (isBlocking && isLooking)
+        if (IsBlocking && CantHit)
         {
             anim.SetTrigger(onBlocked);
             return;
@@ -225,7 +228,7 @@ public class BossKnight : MonoBehaviour
             StopAllCoroutines();
             isMoving = false;
             isRolling = false;
-            isBlocking = false;
+            IsBlocking = false;
             anim.SetBool(block, false);
             isAttacking = false;
             KnockBackBoss();
