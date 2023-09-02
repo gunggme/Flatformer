@@ -190,7 +190,7 @@ AnimatorStateTransition:
     m_EventTreshold: 0
   - m_ConditionMode: 3
     m_ConditionEvent: attackCount
-    m_EventTreshold: 3
+    m_EventTreshold: 2
   - m_ConditionMode: 4
     m_ConditionEvent: attackCount
     m_EventTreshold: 5
