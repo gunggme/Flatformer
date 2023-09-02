@@ -44,10 +44,6 @@ public class Damageable : MonoBehaviour
             // If heath drops below 0, character is no longer alive
             if (_health <= 0)
             {
-                if (gameObject.CompareTag("Enemy"))
-                {
-                    GameManager.instance.Timer -= 8;
-                }
                 IsAlive = false;
             }
         }

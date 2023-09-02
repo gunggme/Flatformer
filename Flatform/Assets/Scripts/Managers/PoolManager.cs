@@ -20,7 +20,7 @@ public class PoolManager : MonoBehaviour
             
         }
         
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
     }
 
     public GameObject Get(int index)

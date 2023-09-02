@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -288,7 +289,11 @@ public class PlayerController : MonoBehaviour
     
     public void OnHit(int damage, Vector2 knockback)
     {
-        
         rigid.velocity = new Vector2(knockback.x, rigid.velocity.y + knockback.y);
+    }
+
+    public void OnDie()
+    {
+        SceneManager.LoadScene("GameOver");
     }
 }

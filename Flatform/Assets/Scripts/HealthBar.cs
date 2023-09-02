@@ -14,8 +14,7 @@ public class HealthBar : MonoBehaviour
 
     private void Awake()
     {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        playerDamageable = player.GetComponent<Damageable>();
+        playerDamageable = FindObjectOfType<PlayerController>().GetComponent<Damageable>();
     }
 
     // Start is called before the first frame update
